@@ -5,4 +5,9 @@ $(document).ready(function(){
         const fileName = e.target.files[0].name;
         $('.dropzone-title').html('Arquivo  <span class=\'browse\'> '+ fileName +'</span>   foi selecionado.')
     });
+
+    $(":submit").click(function () {
+       $("#app-loading").removeClass("d-none")
+    })
+
 });

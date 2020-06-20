@@ -10994,6 +10994,9 @@ $(document).ready(function () {
     var fileName = e.target.files[0].name;
     $('.dropzone-title').html('Arquivo  <span class=\'browse\'> ' + fileName + '</span>   foi selecionado.');
   });
+  $(":submit").click(function () {
+    $("#app-loading").removeClass("d-none");
+  });
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 

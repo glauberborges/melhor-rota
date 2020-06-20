@@ -9,11 +9,12 @@
     top: 0;
     left: 0;
     overflow: hidden!important;
-    background-color: var(--primary)
+    background-color: $base-color
 }
 
 .app-loading .logo-loading {
-    width: 300px
+    width: 300px;
+    margin: 15% auto;
 }
 
 .app-loading .logo-loading.hidden {

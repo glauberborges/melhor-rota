@@ -6,11 +6,12 @@
   top: 0;
   left: 0;
   overflow: hidden !important;
-  background-color: var(--primary);
+  background-color: #e63b4f;
 }
 
 .app-loading .logo-loading {
   width: 300px;
+  margin: 15% auto;
 }
 
 .app-loading .logo-loading.hidden {
