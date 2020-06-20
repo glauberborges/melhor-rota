@@ -1,8 +1,10 @@
 <?php
 namespace App\Services\GeoCoding;
 
+use function array_push;
 use function dd;
 use function dump;
+use function end;
 use function env;
 use function file_get_contents;
 use function is_array;
@@ -11,6 +13,11 @@ use function trim;
 use function urlencode;
 use function utf8_encode;
 
+
+// https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Miami&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
+
+// https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Miami&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
+// https://maps.googleapis.com/maps/api/directions/json?origin=Boston,MA&destination=Concord,MA&waypoints=via:Charlestown,MA|via:Lexington,MA|via:Concord,MA&departure_time=now&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
 class GeoCoding
 {
     private $adress;
@@ -45,7 +52,6 @@ class GeoCoding
 
     }
 
-    // https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
     public function parsing(array $address_components)
     {
         $result = [];
@@ -84,5 +90,53 @@ class GeoCoding
 
       return $result;
     }
+
+    public function deliveryRoutes(string $origin, array $destinations)
+    {
+        foreach ($destinations as $key => $destination) {
+
+            $url_build =  http_build_query([
+                'origin'        => $origin,
+                'destination'   => $destination[4],
+                'key'           => $this->key,
+            ]);
+
+            $result = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?{$url_build}");
+
+
+            if(!isset(json_decode($result)->routes[0])){
+                dd($destination[4],json_decode($result));
+            }
+
+            $distance = json_decode($result)->routes[0]->legs[0]->distance->value;
+
+            array_push($destinations[$key], $distance);
+
+       }
+
+        usort($destinations, function($a, $b) {
+            return $a[6] <=> $b[6];
+        });
+
+
+        $waypoints = "";
+        foreach ($destinations as $dest_adress) {
+           $waypoints .= "via:{$dest_adress[4]}|";
+
+        }
+
+        $url_build =  http_build_query([
+            'origin'            => $origin,
+            'destination'       => end($destinations)[4],
+            'waypoints'         => $waypoints,
+            'departure_time'    => 'now',
+            'key'               => $this->key,
+        ]);
+
+        $result = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?{$url_build}");
+
+        return json_decode($result);
+    }
+
 
 }

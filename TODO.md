@@ -6,15 +6,15 @@ Criação de Clientes
 
 Requisitos negócio:
 
-- [ ] Criar estrutura banco de dados:    
+- [X] Criar estrutura banco de dados:    
 - [X] Importar um arquivo CSV de cliente(s);
 - [X] Parsear endereço (logradouro, número, complemento, bairro, cep, cidade);
 - [X] Buscar GeoLocalização (GeoCoding) utilizando API do Google;
-- [ ] Salvar em Banco de dados;
-- [ ] Exibir em um grid os dados importados no BD;
-- [ ] Exportar dados do Grid em csv;
-- [ ] Gerar uma sequência lógica de entregas entre os endereços importados do csv:
-    > Utilizar o endereço Avenida Dr. Gastão Vidigal, 1132 - Vila Leopoldina - 05314-010 como ponto inicial;
+- [X] Salvar em Banco de dados;
+- [x] Exibir em um grid os dados importados no BD;
+- [X] Exportar dados do Grid em csv;
+- [X] Gerar uma sequência lógica de entregas entre os endereços importados do csv:
+    > Utilizar o endereço Avenida Dr. Gastão Vidigal, 1132,Vila Leopoldina,05314-010 como ponto inicial;
 
 CustomerstModel -m
 

@@ -60,6 +60,13 @@
                 <input id="files" name="file" type="file" class="file-input" />
             </div>
             <br>
+
+            <label for="basic-url">Insira o endereço do centro de distribuição</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="adress_cd" id="basic-url" aria-describedby="basic-addon3" value="Avenida Dr. Gastão Vidigal, 1132,Vila Leopoldina,05314-010">
+            </div>
+
+            <br>
             <button type="submit" class="btn btn-outline-primary btn-block">Processar CSV</button>
         </div>
     </form>
