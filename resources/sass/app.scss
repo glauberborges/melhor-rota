@@ -9,32 +9,27 @@
     top: 0;
     left: 0;
     overflow: hidden!important;
-    background-color: $base-color
-}
+    background-color: $base-color;
 
-.app-loading .logo-loading {
-    width: 300px;
-    margin: 15% auto;
-}
+    & .logo-loading {
+        width: 300px;
+        margin: 15% auto;
 
-.app-loading .logo-loading.hidden {
-    display: none!important
-}
+        &.hidden {
+            display: none!important
+        }
 
-@media screen and (max-width: 576px) {
-    .app-loading .logo-loading {
-        width:150px
+        & path {
+            fill: transparent;
+            stroke: #fff;
+            stroke-width: 1px;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            -webkit-animation: dash 2s infinite;
+            animation: dash 2s infinite
+        }
     }
-}
 
-.app-loading .logo-loading path {
-    fill: transparent;
-    stroke: #fff;
-    stroke-width: 1px;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    -webkit-animation: dash 2s infinite;
-    animation: dash 2s infinite
 }
 
 @-webkit-keyframes dash {
@@ -48,19 +43,8 @@
     }
 }
 
-@keyframes dash {
-    99% {
-        stroke-dashoffset: 0
-    }
-
-    100% {
-        stroke-width: 0;
-        fill: #fff
-    }
-}
-
 // HALF
-.bg-half{
+.bg-half {
     background: $base-color;
     height: 50vh;
 
@@ -71,9 +55,9 @@
     }
 }
 
-
-.box-upload{
-    margin-top: -10rem;
+// UPLOAD
+.box-upload {
+    margin-top: -8rem;
     .box-container {
         width: 45rem;
         margin: 0 auto;
@@ -168,5 +152,16 @@
             border-style: solid;
             border-color: #f9f9fb #f9f9fb $file-icon-border $file-icon-border;
         }
+    }
+}
+
+.trajetos-box {
+    margin-top: 3rem;
+}
+
+.table-box {
+    margin-top: -100px; background: #ffffff;
+    & table{
+        margin: 15px 0px
     }
 }

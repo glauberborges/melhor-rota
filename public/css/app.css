@@ -18,12 +18,6 @@
   display: none !important;
 }
 
-@media screen and (max-width: 576px) {
-  .app-loading .logo-loading {
-    width: 150px;
-  }
-}
-
 .app-loading .logo-loading path {
   fill: transparent;
   stroke: #fff;
@@ -35,17 +29,6 @@
 }
 
 @-webkit-keyframes dash {
-  99% {
-    stroke-dashoffset: 0;
-  }
-
-  100% {
-    stroke-width: 0;
-    fill: #fff;
-  }
-}
-
-@keyframes dash {
   99% {
     stroke-dashoffset: 0;
   }
@@ -68,7 +51,7 @@
 }
 
 .box-upload {
-  margin-top: -10rem;
+  margin-top: -8rem;
 }
 
 .box-upload .box-container {
@@ -166,5 +149,18 @@
   border-width: 0.625rem;
   border-style: solid;
   border-color: #f9f9fb #f9f9fb #b8bec9 #b8bec9;
+}
+
+.trajetos-box {
+  margin-top: 3rem;
+}
+
+.table-box {
+  margin-top: -100px;
+  background: #ffffff;
+}
+
+.table-box table {
+  margin: 15px 0px;
 }
 

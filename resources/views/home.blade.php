@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
 
-    <link rel="stylesheet" href="{{asset('bootstrap/estilo.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 
@@ -48,8 +48,6 @@
     </div>
 </div>
 
-
-
 <div class="box-upload">
     @if ($errors->any())
         <div class="container">
@@ -58,7 +56,7 @@
                     <div class="alert alert-danger">
                         @foreach ($errors->all() as $error)
                             <div>
-                                {{ $error }}
+                                {!! $error !!}
                             </div>
                         @endforeach
                     </div>
@@ -66,7 +64,6 @@
             </div>
         </div>
     @endif
-
 
     <form action="{{route('process.csv')}}" enctype="multipart/form-data" method="POST">
         <div class='box-container'>

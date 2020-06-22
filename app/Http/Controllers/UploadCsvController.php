@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\CustomersModel;
 use App\Services\GeoCoding\GeoCoding;
 use function array_push;
+use function count;
 use function dd;
 use function dump;
 use function explode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use function trim;
+use function utf8_decode;
 use function utf8_encode;
 
 class UploadCsvController extends Controller
@@ -41,20 +43,30 @@ class UploadCsvController extends Controller
             $csv = $request->file('file');
 
             $data_csv = [];
-            foreach (file($csv) as $line) {
-                $line = utf8_encode($line);
-                array_push($data_csv, explode(";",  $line));
+            foreach (file($csv) as $key => $line) {
+                $line           = utf8_encode($line);
+                $line_array     = explode(";",  $line);
+
+                if(count($line_array) < 6){
+                    return redirect()
+                        ->back()
+                        ->withErrors(["Ops..", "Parece que a linha <b><p>{$line}</p></b> está com formato inválido"]);
+                }
+
+                array_push($data_csv, $line_array);
             }
 
             unset($data_csv[0]);
             foreach ($data_csv as $dada) {
-//                $result_geocoding = $geoCoding->setAdress($dada[4])->get();
-//
-//                if ($result_geocoding->status != "OK"){
-//                    // fazer o redirect aqui para a home com o erro.
-//                    dd("O endereço {$dada[4]} é inválido");
-//                }
-//
+                $result_geocoding = $geoCoding->getAdress($dada[4]);
+
+                if ($result_geocoding->status != "OK"){
+                    $adress_utf8 = utf8_decode($dada[4]);
+                    return redirect()
+                        ->back()
+                        ->withErrors(["Ops..", "O endereço <b><p>{$adress_utf8} </p></b> está com formato inválido ou incompleto"]);
+                }
+
 //                $geoCoding_parsing =  $geoCoding->parsing($result_geocoding->results[0]->address_components);
 //
 //                $customer = new CustomersModel();
@@ -81,14 +93,13 @@ class UploadCsvController extends Controller
                 $data_csv
             );
 
+            if (!$delivery_routes){
+                return redirect()
+                    ->back()
+                    ->withErrors(["Ops..", "Aconteceu um erro inesperado ao calcular as melhores rotas, tente novamente."]);
+            }
 
             return view('list',compact("data_csv"), compact("delivery_routes") );
-
-            dd(
-                $delivery_routes,
-                $data_csv
-            );
-
         }
     }
 }

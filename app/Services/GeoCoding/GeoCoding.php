@@ -9,41 +9,63 @@ use function env;
 use function file_get_contents;
 use function is_array;
 use function json_decode;
+use function redirect;
 use function trim;
 use function urlencode;
 use function utf8_encode;
 
 
-// https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Miami&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
-
-// https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Miami&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
-// https://maps.googleapis.com/maps/api/directions/json?origin=Boston,MA&destination=Concord,MA&waypoints=via:Charlestown,MA|via:Lexington,MA|via:Concord,MA&departure_time=now&key=AIzaSyCIqywOrtInGBQ_ueqt43A5YwgzExpG5Hw
 class GeoCoding
 {
     private $adress;
     private $key;
+    private $format     = 1; // 1 = json | 2 = xml
+    private $url_api    = "https://maps.googleapis.com/maps/api/";
+    private $url;
 
     public function __construct()
     {
         $this->key = env('KEY_GEOCODING');
     }
 
-    public function setAdress(string $adress)
+    public function methodApi($method)
     {
-        $this->adress = urlencode(utf8_encode($adress));
-
+        if ($this->format === 2 ){
+            $this->url = "{$this->url_api}{$method}/xml?";
+        }else{
+            $this->url = "{$this->url_api}{$method}/json?";
+        }
         return $this;
     }
 
-    public function get()
+    public function client($params)
     {
-        $result = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?&address={$this->adress}&key={$this->key}");
-        return json_decode($result);
 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->url.$params);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return $result;
+    }
+
+    public function getAdress(string $adress)
+    {
+        $url_build =  http_build_query([
+            'address'       => $adress,
+            'key'           => $this->key,
+        ]);
+
+        $result = $this->methodApi("geocode")->client($url_build);
+
+        return json_decode($result);
     }
 
     public function latitudeLongitude()
     {
+
+        dd("latitudeLongitude REFAFORAR");
         $result = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?&address={$this->adress}&key={$this->key}");
 
         if (json_decode($result)->status != "OK") return json_decode($result)->error_message;
@@ -101,11 +123,10 @@ class GeoCoding
                 'key'           => $this->key,
             ]);
 
-            $result = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?{$url_build}");
-
+            $result = $this->methodApi("directions")->client($url_build);
 
             if(!isset(json_decode($result)->routes[0])){
-                dd($destination[4],json_decode($result));
+                return false;
             }
 
             $distance = json_decode($result)->routes[0]->legs[0]->distance->value;
@@ -133,10 +154,8 @@ class GeoCoding
             'key'               => $this->key,
         ]);
 
-        $result = file_get_contents("https://maps.googleapis.com/maps/api/directions/json?{$url_build}");
+        $result = $this->methodApi("directions")->client($url_build);
 
         return json_decode($result);
     }
-
-
 }

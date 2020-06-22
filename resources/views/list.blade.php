@@ -5,9 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <title>Rota</title>
 
-    <link rel="stylesheet" href="{{asset('bootstrap/estilo.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 
@@ -27,13 +27,11 @@
     </div>
 </div>
 
-
-
-<div class="container-fluid" style="margin-top: -100px; background: #ffffff">
+<div class="container-fluid table-box">
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table table-bordered" style="margin: 15px 0px;" id="table">
+                <table class="table table-bordered" id="table">
                     <thead>
                     <tr>
                         <th scope="col">Nome</th>
@@ -47,11 +45,11 @@
                     <tbody>
                     @foreach($data_csv as $row)
                         <tr>
-                            <th>{{$row[0]}}</th>
+                            <th>{{ utf8_decode($row[0]) }}</th>
                             <th>{{$row[1]}}</th>
                             <th>{{$row[2]}}</th>
                             <th>{{$row[3]}}</th>
-                            <th>{{$row[4]}}</th>
+                            <th>{{utf8_decode($row[4])}}</th>
                             <th>{{$row[5]}}</th>
                         </tr>
                     @endforeach
@@ -59,12 +57,12 @@
                 </table>
             </div>
 
-            <button type="button" class="btn btn-outline-primary btn-block" onclick="download_table_as_csv('table');">Exporta dados para CSV</button>
+            <button type="button" class="btn btn-outline-primary btn-block" onclick="site.toCsv('table');">Exporta dados para CSV</button>
         </div>
     </div>
 </div>
 
-<div class="container-fluid" style="margin-top: 5px">
+<div class="container-fluid trajetos-box">
     <div class="row">
         <div class="col">
             <div class="text-center">
@@ -82,7 +80,7 @@
                     <b>Distância total:</b> {{$delivery_routes->routes[0]->legs[0]->distance->text}}
                     <b>Duração total:</b> {{$delivery_routes->routes[0]->legs[0]->duration->text}}
                 </p>
-                <table class="table table-bordered" style="margin: 15px 0px;">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th scope="col">Distância</th>
@@ -110,39 +108,6 @@
 </div>
 <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('js/app.js')}}"></script>
-
-<script>
-        // Quick and simple export target #table_id into a csv
-        function download_table_as_csv(table_id) {
-            // Select rows from table_id
-            var rows = document.querySelectorAll('table#' + table_id + ' tr');
-            // Construct csv
-            var csv = [];
-            for (var i = 0; i < rows.length; i++) {
-                var row = [], cols = rows[i].querySelectorAll('td, th');
-                for (var j = 0; j < cols.length; j++) {
-                    // Clean innertext to remove multiple spaces and jumpline (break csv)
-                    var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
-                    // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-                    data = data.replace(/"/g, '""');
-                    // Push escaped string
-                    row.push('"' + data + '"');
-                }
-                csv.push(row.join(';'));
-            }
-            var csv_string = csv.join('\n');
-            // Download it
-            var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
-            var link = document.createElement('a');
-            link.style.display = 'none';
-            link.setAttribute('target', '_blank');
-            link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-</script>
 
 </body>
 </html>
