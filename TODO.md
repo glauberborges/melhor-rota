@@ -16,8 +16,6 @@ Requisitos negócio:
 - [X] Gerar uma sequência lógica de entregas entre os endereços importados do csv:
     > Utilizar o endereço Avenida Dr. Gastão Vidigal, 1132,Vila Leopoldina,05314-010 como ponto inicial;
 
-CustomerstModel -m
-
 Requisitos Técnicos:
 
 - controle de versionamento (GIT)
