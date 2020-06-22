@@ -63,7 +63,7 @@ Para esse projeto foi usado as seguintes tecnologias:
 
 ##### Clone o repositório
 ```bash
-  $ git https://github.com/glauberborges/melhor-rota.git
+  $ git clone https://github.com/glauberborges/melhor-rota.git
 ```
 
 #### Instale as dependências
@@ -96,15 +96,16 @@ Não sabe como conseguir a sua Key? veja esse link [get api key](https://develop
   $ php artisan key:generate 
 ```
 
-#### Migration
+#### Migration (Opcional)
 ```bash
   $ php artisan migrate
 ```
 
-#### Servidor
+#### Servidor (Opcional)
+> Se usa um servidor de sua preferência pule essa etapa
 Você pode usar seu servidor preferido ou então usar o [Laradock](https://laradock.io/)
 
-##### Laradock (opcional)
+##### Laradock (Opcional)
 Para usar o Laradock você precisa ter o Docker em sua máquina [Docker](https://www.docker.com/)
 entre na pasta do Laradock
 ```bash
